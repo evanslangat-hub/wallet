@@ -12,10 +12,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["wallet/wallet.csproj", "wallet/"]
-RUN dotnet restore "./wallet/wallet.csproj"
+COPY ["wallet.csproj", "./"]
+RUN dotnet restore "./wallet.csproj"
 COPY . .
-WORKDIR "/src/wallet"
+WORKDIR "/src"
 RUN dotnet build "./wallet.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

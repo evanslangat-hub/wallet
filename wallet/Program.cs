@@ -1,3 +1,5 @@
+using wallet.Endpoints;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,19 +14,17 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.MapOpenApi();
 app.UseSwagger();
-if (app.Environment.IsDevelopment())
-{
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = string.Empty;
+    options.RoutePrefix = "swagger"; // make UI reachable at /swagger
 });
-}
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapGet("hello", () => "App is running");
+app.MapGet("/health", () => "App is running").WithName("Health");
+app.MapAuthEndpoints();
 
 app.Run();
